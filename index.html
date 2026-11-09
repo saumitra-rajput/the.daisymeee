@@ -29,6 +29,14 @@
     </div>
   </section>
 
+  <!-- ============ INTRO (after passcode) ============ -->
+  <div id="intro" class="intro hidden" aria-live="polite">
+    <h1 class="intro-title script">Hi Mansi…</h1>
+    <p class="intro-sub">I made something for you 💗</p>
+    <div id="daisy-burst" class="daisy-burst" aria-hidden="true"></div>
+    <p class="intro-skip">tap to skip</p>
+  </div>
+
   <!-- ============ MAIN SITE ============ -->
   <main id="site" class="hidden">
 
@@ -45,7 +53,7 @@
       <div id="letter-paper" class="paper hidden">
         <h2 class="script">My dearest Mansi,</h2>
         <div id="letter-text" class="letter-text"></div>
-        <p class="signature script hidden" id="signature">Forever yours,<br>your idiot who loves you 💗</p>
+        <p class="signature script hidden" id="signature">Forever and always,<br>your Nunu 💗</p>
       </div>
     </section>
 
@@ -72,14 +80,20 @@
       <div class="polaroids" id="polaroids"></div>
     </section>
 
-    <!-- Videos -->
+    <!-- Video -->
     <section id="videos" class="section">
-      <h2 class="section-title script">Our Little Moments 🎬</h2>
+      <h2 class="section-title script">A Little Moment of Us 🎬</h2>
       <p class="section-sub">press play, and remember how happy we are together</p>
       <div class="videos">
         <video src="photos/video1.mp4" poster="photos/video1-poster.jpg" controls playsinline preload="none" class="portrait"></video>
-        <video src="photos/video2.mp4" poster="photos/video2-poster.jpg" controls playsinline preload="none" class="landscape"></video>
       </div>
+    </section>
+
+    <!-- Silly gallery -->
+    <section id="silly" class="section">
+      <h2 class="section-title script">Our Silly Side 🤪</h2>
+      <p class="section-sub">because nobody makes me laugh like you do</p>
+      <div class="polaroids" id="polaroids-silly"></div>
     </section>
 
     <!-- Game -->
@@ -119,6 +133,12 @@
   </main>
 
   <canvas id="confetti" aria-hidden="true"></canvas>
+
+  <!-- background music -->
+  <audio id="bg-music" src="music/song.mp3" loop preload="auto"></audio>
+  <button id="music-btn" class="music-btn hidden" aria-label="Play music" title="Music">
+    <span class="music-icon">🎵</span>
+  </button>
   <script src="reasons.js"></script>
   <script src="script.js"></script>
 </body>

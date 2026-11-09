@@ -8,22 +8,41 @@
 
 You didn't deserve that, not for a single second. I've been thinking about it every moment since, and I hate that I was the reason for the sadness on the face I love most.
 
-You are my whole world. Your smile is my favourite thing, your happiness is my biggest goal, and seeing you upset breaks my heart more than anything else could.
+I'm not going to make excuses. I was wrong. I know I'm not perfect, and sometimes I fall short of being who you deserve. But I want you to know I'm working on myself, seriously, every single day. Not just to say sorry, but to actually become better, for you.
 
-I'm not going to make excuses. I was wrong. I'm going to do better, because you deserve the very best of me, always.
+All I want is to see you happy. I want to give you everything you deserve: every smile, every bit of care, every little thing that makes your heart light up. Some days I don't get it right, but I will never, ever stop trying.
+
+You are my whole world, Mansi. I love you so much, and I always will, no matter what. That will never change. It's you or nobody. Always.
 
 So I made you this little place, filled with all the things I should say more often. Scroll down, take your time… and maybe, just maybe, give me another chance? 🥺`;
 
   // Put your photos inside the /photos folder and list them here.
   const PHOTOS = [
-    { src: "photos/5.jpg", caption: "celebrating us 🎂" },
-    { src: "photos/2.jpg", caption: "you, in every colour 💜" },
-    { src: "photos/4.jpg", caption: "the way I look at you" },
-    { src: "photos/8.jpg", caption: "cutest one in the store 🐧" },
-    { src: "photos/7.jpg", caption: "my favourite view" },
-    { src: "photos/1.jpg", caption: "my silly, my everything" },
-    { src: "photos/3.jpg", caption: "your smile = my sunshine ☀️" },
-    { src: "photos/6.jpg", caption: "sweetest girl 🍓" },
+    { src: "photos/9.jpg",  caption: "boat rides with you ⛵" },
+    { src: "photos/5.jpg",  caption: "celebrating us 🎂" },
+    { src: "photos/14.jpg", caption: "the way you look at me 🥹" },
+    { src: "photos/2.jpg",  caption: "you, in every colour 💜" },
+    { src: "photos/12.jpg", caption: "hold me like this forever" },
+    { src: "photos/4.jpg",  caption: "the way I look at you" },
+    { src: "photos/15.jpg", caption: "flowers among flowers 🌸" },
+    { src: "photos/19.jpg", caption: "every journey with you ✈️" },
+    { src: "photos/8.jpg",  caption: "cutest one in the store 🐧" },
+    { src: "photos/17.jpg", caption: "always making me smile" },
+    { src: "photos/7.jpg",  caption: "my favourite view" },
+    { src: "photos/11.jpg", caption: "smiles on every trip" },
+    { src: "photos/3.jpg",  caption: "your smile = my sunshine ☀️" },
+    { src: "photos/21.jpg", caption: "lazy days with you" },
+    { src: "photos/6.jpg",  caption: "sweetest girl 🍓" },
+    { src: "photos/10.jpg", caption: "little daisies, like you 🌼" },
+  ];
+
+  const SILLY_PHOTOS = [
+    { src: "photos/13.jpg", caption: "that laugh, even on video call 😂" },
+    { src: "photos/1.jpg",  caption: "my silly, my everything" },
+    { src: "photos/22.jpg", caption: "skincare queen 👑" },
+    { src: "photos/16.jpg", caption: "caught snacking 😋" },
+    { src: "photos/20.jpg", caption: "your weird husband 🤪" },
+    { src: "photos/18.jpg", caption: "birthdays, even miles apart 🎂" },
   ];
 
   const REASON_INTERVAL_MS = 5000;
@@ -51,17 +70,77 @@ So I made you this little place, filled with all the things I should say more of
   setInterval(spawnHeart, 900);
   for (let i = 0; i < 6; i++) setTimeout(spawnHeart, i * 250);
 
+  /* ---------- background music ---------- */
+  const music = (() => {
+    const audio = $("bg-music"), btn = $("music-btn");
+    const TARGET_VOL = 0.6;
+    let userPaused = false, pausedForVideo = false;
+
+    function setUI() {
+      const on = !audio.paused;
+      btn.classList.toggle("playing", on);
+      btn.classList.toggle("nudge", !on && !userPaused);
+      btn.setAttribute("aria-label", on ? "Pause music" : "Play music");
+    }
+    function fadeIn() {
+      audio.volume = 0;
+      const step = setInterval(() => {
+        audio.volume = Math.min(TARGET_VOL, audio.volume + 0.03);
+        if (audio.volume >= TARGET_VOL) clearInterval(step);
+      }, 100);
+    }
+    function play() {
+      const p = audio.play();
+      if (p && p.then) p.then(() => { fadeIn(); setUI(); }).catch(setUI);
+      else setUI();
+    }
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (audio.paused) { userPaused = false; play(); }
+      else { userPaused = true; audio.pause(); setUI(); }
+    });
+    audio.addEventListener("pause", setUI);
+    audio.addEventListener("play", setUI);
+
+    // pause the song while one of our videos plays, resume after
+    document.querySelectorAll("video").forEach((v) => {
+      v.addEventListener("play", () => {
+        if (!audio.paused) { pausedForVideo = true; audio.pause(); }
+      });
+      const resume = () => { if (pausedForVideo && !userPaused) { pausedForVideo = false; play(); } };
+      v.addEventListener("pause", resume);
+      v.addEventListener("ended", resume);
+    });
+
+    return {
+      // must be called inside a tap/click so phones allow sound
+      start() { btn.classList.remove("hidden"); play(); },
+      // after a reload there was no tap, so wait for her first one
+      startOnFirstTap() {
+        btn.classList.remove("hidden");
+        play();
+        const once = (e) => {
+          if (e.target.closest("#music-btn, video")) return;
+          if (audio.paused && !userPaused) play();
+          document.removeEventListener("pointerdown", once);
+        };
+        document.addEventListener("pointerdown", once);
+      },
+    };
+  })();
+
   /* ---------- lock screen ---------- */
   function unlock(animate) {
     const lock = $("lock");
     store.set("unlocked", "1");
     if (animate) {
+      music.start();
       lock.classList.add("lock-out");
-      burstConfetti(80);
-      setTimeout(() => { lock.remove(); showSite(); }, 800);
+      setTimeout(() => { lock.remove(); playIntro(showSite); }, 800);
     } else {
       lock.remove();
       showSite();
+      music.startOnFirstTap();
     }
   }
 
@@ -87,9 +166,72 @@ So I made you this little place, filled with all the things I should say more of
     $("site").classList.remove("hidden");
     initReveal();
     initReasons();
-    initGallery();
+    buildGallery("polaroids", PHOTOS);
+    buildGallery("polaroids-silly", SILLY_PHOTOS);
     initGame();
   }
+
+  /* ---------- intro: dark screen → "Hi Mansi…" → daisy burst ---------- */
+  function playIntro(done) {
+    const intro = $("intro");
+    intro.classList.remove("hidden");
+    const timers = [];
+    let finished = false;
+
+    function finish() {
+      if (finished) return;
+      finished = true;
+      timers.forEach(clearTimeout);
+      intro.classList.add("intro-out");
+      done();
+      setTimeout(() => intro.remove(), 1200);
+    }
+
+    timers.push(setTimeout(() => intro.classList.add("show-title"), 600));
+    timers.push(setTimeout(() => intro.classList.add("show-sub"), 2000));
+    timers.push(setTimeout(daisyBurst, 3300));
+    timers.push(setTimeout(finish, 5200));
+    intro.addEventListener("click", finish);
+  }
+
+  function daisyBurst() {
+    const box = $("daisy-burst");
+    const flowers = ["🌼", "🌼", "🌼", "🌸", "💗"];
+    for (let i = 0; i < 46; i++) {
+      const d = document.createElement("span");
+      d.textContent = flowers[i % flowers.length];
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 120 + Math.random() * Math.max(innerWidth, innerHeight) * 0.55;
+      d.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+      d.style.setProperty("--dy", Math.sin(angle) * dist + "px");
+      d.style.setProperty("--rot", (Math.random() * 720 - 360) + "deg");
+      d.style.fontSize = 18 + Math.random() * 26 + "px";
+      d.style.animationDelay = Math.random() * 0.15 + "s";
+      box.appendChild(d);
+    }
+  }
+
+  /* ---------- sparkle trail ---------- */
+  (function sparkleTrail() {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const glyphs = ["✦", "✧", "♡", "•"];
+    const colors = ["#e0709a", "#f4a6c0", "#f7c873", "#c84b7a"];
+    let lastT = 0;
+    document.addEventListener("pointermove", (e) => {
+      const now = performance.now();
+      if (now - lastT < 35) return;
+      lastT = now;
+      const s = document.createElement("span");
+      s.className = "sparkle";
+      s.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+      s.style.left = e.clientX + (Math.random() * 12 - 6) + "px";
+      s.style.top = e.clientY + (Math.random() * 12 - 6) + "px";
+      s.style.color = colors[Math.floor(Math.random() * colors.length)];
+      s.style.fontSize = 10 + Math.random() * 10 + "px";
+      document.body.appendChild(s);
+      setTimeout(() => s.remove(), 900);
+    }, { passive: true });
+  })();
 
   /* ---------- reveal on scroll ---------- */
   function initReveal() {
@@ -182,9 +324,9 @@ So I made you this little place, filled with all the things I should say more of
   }
 
   /* ---------- gallery ---------- */
-  function initGallery() {
-    const wrap = $("polaroids");
-    PHOTOS.forEach((p) => {
+  function buildGallery(wrapId, list) {
+    const wrap = $(wrapId);
+    list.forEach((p) => {
       const fig = document.createElement("figure");
       fig.className = "polaroid";
       const img = new Image();
