@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>For My Mansi 🌼</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- floating hearts background -->
+  <div id="hearts-bg" aria-hidden="true"></div>
+
+  <!-- ============ LOCK SCREEN ============ -->
+  <section id="lock" class="screen active">
+    <div class="lock-card">
+      <div class="lock-icon">🔒</div>
+      <h1 class="script">Hey you…</h1>
+      <p>This little corner of the internet was made only for one person.</p>
+      <p class="muted">Enter the secret word to come in 💗</p>
+      <form id="lock-form" autocomplete="off">
+        <input id="passcode" type="password" placeholder="secret word…" aria-label="Passcode" autofocus>
+        <button type="submit" class="btn">Open ❤</button>
+      </form>
+      <p id="lock-error" class="error" role="alert"></p>
+    </div>
+  </section>
+
+  <!-- ============ MAIN SITE ============ -->
+  <main id="site" class="hidden">
+
+    <!-- Envelope / apology letter -->
+    <section id="letter" class="section">
+      <div class="envelope-wrap">
+        <div id="envelope" class="envelope" role="button" tabindex="0" aria-label="Open the letter">
+          <div class="flap"></div>
+          <div class="pocket"></div>
+          <div class="seal">💌</div>
+        </div>
+        <p class="hint">tap the envelope</p>
+      </div>
+      <div id="letter-paper" class="paper hidden">
+        <h2 class="script">My dearest Mansi,</h2>
+        <div id="letter-text" class="letter-text"></div>
+        <p class="signature script hidden" id="signature">Forever yours,<br>your idiot who loves you 💗</p>
+      </div>
+    </section>
+
+    <!-- 100 reasons -->
+    <section id="reasons" class="section">
+      <h2 class="section-title script">100 Reasons I Love You</h2>
+      <p class="section-sub">(and honestly I could keep going forever)</p>
+      <div class="reason-card" id="reason-card">
+        <div class="reason-num" id="reason-num">#1</div>
+        <p class="reason-text" id="reason-text"></p>
+        <div class="progress"><div class="progress-bar" id="reason-progress"></div></div>
+      </div>
+      <div class="reason-controls">
+        <button class="btn ghost" id="reason-prev" aria-label="Previous reason">‹</button>
+        <button class="btn ghost" id="reason-pause" aria-label="Pause">❚❚</button>
+        <button class="btn ghost" id="reason-next" aria-label="Next reason">›</button>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery" class="section">
+      <h2 class="section-title script">Us 📸</h2>
+      <p class="section-sub">my favourite views are all of you</p>
+      <div class="polaroids" id="polaroids"></div>
+    </section>
+
+    <!-- Videos -->
+    <section id="videos" class="section">
+      <h2 class="section-title script">Our Little Moments 🎬</h2>
+      <p class="section-sub">press play, and remember how happy we are together</p>
+      <div class="videos">
+        <video src="photos/video1.mp4" poster="photos/video1-poster.jpg" controls playsinline preload="none" class="portrait"></video>
+        <video src="photos/video2.mp4" poster="photos/video2-poster.jpg" controls playsinline preload="none" class="landscape"></video>
+      </div>
+    </section>
+
+    <!-- Game -->
+    <section id="game" class="section">
+      <h2 class="section-title script">Catch My Love 💘</h2>
+      <p class="section-sub">Catch <b>20</b> hearts to unlock a secret. Avoid the 💔 — those are my mistakes.</p>
+      <div class="game-box">
+        <canvas id="game-canvas" width="360" height="480"></canvas>
+        <div class="game-overlay" id="game-overlay">
+          <p id="game-msg">Move with your finger, mouse, or ← → keys</p>
+          <button class="btn" id="game-start">Play</button>
+        </div>
+        <div class="game-hud"><span id="game-score">💗 0 / 20</span><span id="game-lives">❤❤❤</span></div>
+      </div>
+      <div id="game-secret" class="secret hidden">
+        <h3 class="script">Secret unlocked 🔓</h3>
+        <p>You caught all my love… just like you caught my heart the very first time. It's always been yours.</p>
+      </div>
+    </section>
+
+    <!-- Forgive -->
+    <section id="forgive" class="section">
+      <h2 class="section-title script">So… will you forgive me?</h2>
+      <div class="forgive-box" id="forgive-box">
+        <button class="btn big" id="yes-btn">Yes 💗</button>
+        <button class="btn ghost" id="no-btn">No</button>
+      </div>
+      <p id="no-msg" class="muted"></p>
+      <div id="final" class="final hidden">
+        <h3 class="script">Thank you, my love 🥹</h3>
+        <p>Now please unblock me so I can tell you all of this in person,<br>with a hug that lasts way too long.</p>
+        <p class="big-heart">💗</p>
+      </div>
+    </section>
+
+    <footer>made with every bit of my heart, only for you 🌼</footer>
+  </main>
+
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <script src="reasons.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
